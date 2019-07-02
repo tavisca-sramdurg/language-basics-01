@@ -14,34 +14,34 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
             Test("2*12?=247", -1);
             Console.ReadKey(true);
         }
-        
+
         private static void Test(string args, int expected)
         {
-           var result = FindDigit(args).Equals(expected) ? "PASS" : "FAIL";
-           Console.WriteLine($"{args} : {result}");
+            var result = FindDigit(args).Equals(expected) ? "PASS" : "FAIL";
+            Console.WriteLine($"{args} : {result}");
         }
 
         public static int FindDigit(string equation)
         {
 
-            
+
             int indexStar = 0;
             int indexEqual = 0;
             int indexQuestionMark = 0;
 
             for (int k = 0; k < equation.Length; k++)
             {
-                if(equation.ElementAt(k) == '*')
+                if (k == equation.IndexOf('*'))
                 {
                     indexStar = k;
                 }
 
-                if (equation.ElementAt(k) == '=')
+                if (k == equation.IndexOf('='))
                 {
                     indexEqual = k;
                 }
 
-                if (equation.ElementAt(k) == '?')
+                if (k == equation.IndexOf('?'))
                 {
                     indexQuestionMark = k;
                 }
@@ -50,81 +50,44 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
             //finding the number with a missing digit
             if (indexQuestionMark < indexStar && indexQuestionMark < indexEqual)  //number 1 is incomplete
             {
-                // Number 1
-                int res = NumberOneIncomplete(indexStar, indexEqual, indexQuestionMark, equation);
+                int res = NumberOneIncomplete(equation);
                 return res;
 
             }
 
             else if (indexQuestionMark > indexStar && indexQuestionMark < indexEqual)  //number 2 is incomplete
             {
-                // Number 2
-                int res = NumberTwoIncomplete(indexStar, indexEqual, indexQuestionMark, equation);
+                int res = NumberTwoIncomplete(equation);
                 return res;
             }
 
-            else if (indexQuestionMark > indexStar && indexQuestionMark > indexEqual)  //number 3 is incomplete
+            else                                                                    //number 3 is incomplete
             {
-                // Number 3
-                int res = NumberThreeIncomplete(indexStar, indexEqual, indexQuestionMark, equation);
+                int res = NumberThreeIncomplete(equation);
                 return res;
             }
-
-            throw new NotImplementedException();
         }
 
 
 
-        public static int NumberOneIncomplete(int indexStar, int indexEqual, int indexQuestionMark, string equation)
+        public static int NumberOneIncomplete(string equation)
         {
-            //Number 1
-            int c1 = 0;
-            int i = 0;
-            while (equation.ElementAt(i++) != '*')
-            {
-                c1++;
-            }
-            string num1 = equation.Substring(0, c1);
-            //int n1 = Int32.Parse(num1);
-            //Console.WriteLine("num1 : " + num1);
+            string[] numbers = GetNumbers(equation);
+            string num1 = numbers[0];
 
-            // Number 2
-            int c2 = 0;
-            i = c1 + 2;
-            while (equation.ElementAt(i++) != '=')
-            {
-                c2++;
-            }
-            string num2 = equation.Substring(c1 + 1, c2 + 1);
-            int n2 = Int32.Parse(num2);
+            Int32.TryParse(numbers[1], out int n2);
+            Int32.TryParse(numbers[2], out int n3);
 
-            //Console.WriteLine("num2 : " + num2);
 
-            // Number 3
-            int c3 = 0;
-            i = c1 + c2 + 3;
-
-            while (i < equation.Length - 1)
-            {
-                c3++;
-                i++;
-            }
-
-            string num3str = equation.Substring(c1 + c2 + 3, c3 + 1);
-            //Console.WriteLine("num3 : " + num3);
-            int n3 = Int32.Parse(num3str);
-
-            int n1x = 0;
             if (n3 % n2 == 0)
             {
-                n1x = n3 / n2;
+                int n1x = n3 / n2;
                 string t1 = n1x.ToString();
 
                 for (int p = 0; p < t1.Length; p++)
                 {
                     if (num1.ElementAt(p) == '?')
                     {
-                        //Console.WriteLine("RES : " + t1.ElementAt(p));
                         char rc = t1.ElementAt(p);
                         int res = rc - '0';
                         return res;
@@ -133,68 +96,34 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
             }
             else
             {
-                //Console.WriteLine("RES : " + (-1));
                 return -1;
             }
 
-            throw new NotImplementedException();
+            return -1;
         }
 
-        public static int NumberTwoIncomplete(int indexStar, int indexEqual, int indexQuestionMark, string equation)
+        public static int NumberTwoIncomplete(string equation)
         {
-            int c1 = 0;
-            int i = 0;
-            while (equation.ElementAt(i++) != '*')
-            {
-                c1++;
-            }
-            string nc1 = equation.Substring(0, c1);
-            int n1 = Int32.Parse(nc1);
-            //Console.WriteLine("nc1 : " + nc1);
+            string[] numbers = GetNumbers(equation);
+            string num2 = numbers[1];
 
-            // Number 2
-            int c2 = 0;
-            i = c1 + 2;
-            while (equation.ElementAt(i++) != '=')
-            {
-                c2++;
-            }
-            string nc2 = equation.Substring(c1 + 1, c2 + 1);
-            //int n2 = Int32.Parse(nc2);
+            Int32.TryParse(numbers[0], out int n1);
+            Int32.TryParse(numbers[2], out int n3);
 
-            //Console.WriteLine("nc2 : " + nc2);
-
-            // Number 3
-            int c3 = 0;
-            i = c1 + c2 + 3;
-
-            while (i < equation.Length - 1)
-            {
-                c3++;
-                i++;
-            }
-
-            string nc3 = equation.Substring(c1 + c2 + 3, c3 + 1);
-            //Console.WriteLine("nc3 : " + nc3);
-            int n3 = Int32.Parse(nc3);
-
-            int n2x = 0;
             if (n3 % n1 == 0)
             {
-                n2x = n3 / n1;
+                int n2x = n3 / n1;
                 string t2 = n2x.ToString();
 
-                if (nc2.Length != t2.Length)
+                if (num2.Length != t2.Length)
                 {
-                    //Console.WriteLine("RES : " + (-1));
                     return -1;
                 }
 
                 for (int p = 0; p < t2.Length; p++)
                 {
-                    if (nc2.ElementAt(p) == '?')
+                    if (p == num2.IndexOf('?'))
                     {
-                        //Console.WriteLine("RES : " + t2.ElementAt(p));
                         char rc = t2.ElementAt(p);
                         int res = rc - '0';
                         return res;
@@ -203,50 +132,19 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
             }
             else
             {
-                //Console.WriteLine("RES : " + (-1));
                 return -1;
             }
 
-            throw new NotImplementedException();
+            return -1;
         }
 
-        public static int NumberThreeIncomplete(int indexStar, int indexEqual, int indexQuestionMark, string equation)
+        public static int NumberThreeIncomplete(string equation)
         {
-            int c1 = 0;
-            int i = 0;
-            while (equation.ElementAt(i++) != '*')
-            {
-                c1++;
-            }
-            string nc1 = equation.Substring(0, c1);
-            int n1 = Int32.Parse(nc1);
-            //Console.WriteLine("nc1 : " + nc1);
+            string[] numbers = GetNumbers(equation);
+            string num3 = numbers[2];
 
-            // Number 2
-            int c2 = 0;
-            i = c1 + 2;
-            while (equation.ElementAt(i++) != '=')
-            {
-                c2++;
-            }
-            string nc2 = equation.Substring(c1 + 1, c2 + 1);
-            int n2 = Int32.Parse(nc2);
-
-            //Console.WriteLine("nc2 : " + nc2);
-
-            // Number 3
-            int c3 = 0;
-            i = c1 + c2 + 3;
-
-            while (i < equation.Length - 1)
-            {
-                c3++;
-                i++;
-            }
-
-            string nc3 = equation.Substring(c1 + c2 + 3, c3 + 1);
-            //Console.WriteLine("nc3 : " + nc3);
-            //int n3 = Int32.Parse(nc3);
+            Int32.TryParse(numbers[0], out int n1);
+            Int32.TryParse(numbers[1], out int n2);
 
             //Compute
             int n3x = n1 * n2;
@@ -255,16 +153,37 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
 
             for (int p = 0; p < t3.Length; p++)
             {
-                if (nc3.ElementAt(p) == '?')
+                if (p == num3.IndexOf('?'))
                 {
-                    //Console.WriteLine("RES : " + t3.ElementAt(p));
                     char rc = t3.ElementAt(p);
                     int res = rc - '0';
                     return res;
                 }
             }
 
-            throw new NotImplementedException();
+            return -1;
+        }
+
+        public static string[] GetNumbers(string equation)
+        {
+            string[] numbers = new string[3];
+            //Number 1
+            string[] temp1 = equation.Split('*');
+            string num1 = temp1[0];
+
+            // Number 2
+            string[] temp2 = temp1[1].Split('=');
+            string num2 = temp2[0];
+
+
+            // Number 3
+            string num3 = temp2[1];
+
+            numbers[0] = num1;
+            numbers[1] = num2;
+            numbers[2] = num3;
+
+            return numbers;
         }
     }
 }
